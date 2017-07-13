@@ -1,0 +1,2 @@
+# EQVisualisation
+Earthquake Visualisation Package
