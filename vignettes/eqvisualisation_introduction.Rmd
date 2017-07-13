@@ -1,0 +1,94 @@
+---
+title: "EQVisualisation Introduction"
+author: "Christian Koopmann"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{EQVisualisation Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Introduction
+The *EQVisualisation* package provides different functionalities to visualise Earthquake data from the  *Significant Earthquake Database*. The different Earthquakes can be visualised both along the time dimension as well as using an interactive map based on the epicenters.
+
+# Functions
+The package contains the following functions:
+
+1. `eq_clean_data`
+1. `eq_location_clean`
+1. `geom_timeline`
+1. `geom_timeline_label`
+1. `eq_map`
+1. `eq_create_label`
+
+In the followin the purpose and use of each function is briefly explained. 
+
+## `eq_clean_data`
+### Summary
+This function cleans the Earth Quake data in the sense that it creates a Date Column from the Year, Month and Day columns and converts Longitutde and Latitude to numerical columns.
+### Example
+This function is used in the following way:
+
+```{R, eval = FALSE}
+data = readr::read_delim("results.tsv", delim = "\t") %>% eq_clean_data()
+```
+
+## `eq_location_clean`
+### Summary
+This function cleans the location name column of the earthquake data to remove the country name from the location.
+### Example
+This function is used in the following way:
+
+```{R, eval = FALSE}
+data = readr::read_delim("results.tsv", delim = "\t") %>% eq_location_clean()
+```
+
+## `geom_timeline`
+### Summary
+This function creates a timeline geom (as in the ggplot2 packagae) that visualises the earthquakes on one ore more timelines. Both the size and the colour of the Earthquake dots can be mapped to different variables (e.g. Deaths, Magnitude). In General the function is used just as other ggplot2 geoms and needs to be added to ggplot2-plot initialized by the ggplot function.
+### Example
+This function is used in the following way:
+
+```{R, eval = FALSE}
+df = readr::read_delim("results.tsv", delim = "\t") %>% eq_clean_data() %>% eq_location_clean()
+ggplot(data = df[COUNTRY %in% c("CHINA","USA") & YEAR >= 2000], aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2)
+
+```
+
+## `geom_timeline_label`
+### Summary
+This geom complements the timeline geom by adding labels to the plot according to the selected label column. The labels are however only added to the top *nrow* earthquakes measured by the magnitude column which has to be passed as the *magnitude* asthetic.
+### Example
+This function is used in the following way:
+
+```{R, eval = FALSE}
+df = readr::read_delim("results.tsv", delim = "\t") %>% eq_clean_data() %>% eq_location_clean()
+ggplot(data = df[COUNTRY %in% c("CHINA","USA") & YEAR >= 2000], aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2) + 
+    geom_timeline(alpha = 0.2) + geom_timeline_label(aes(magnitude = INTENSITY, label = LOCATION_NAME), nudge_y = 0.2,)
+
+```
+
+## `eq_map`
+### Summary
+This function visualises the Earthquakes as circles on an interactive map with position according to Longitude and Latitude columns, radius according to magnitude (EQ_PRIMARY) and labels according to the column name passed as *annot_col* (Defaults to DATE).
+### Example
+This function is used in the following way:
+
+```{R, eval = FALSE}
+readr::read_delim("results.tsv", delim = "\t") %>% eq_clean_data() %>% 
+dplyr::filter(COUNTRY == "MEXICO" & lubridate::year(DATE) >= 2000) %>% eq_map(annot_col = "DATE")
+
+```
+
+
+## `eq_create_label`
+### Summary
+This function creates a character vector from the earthquake data to be used as the label column in *eq_map*. The label is formatted as html containing 3 rows indicating Date, Location Name, and Deaths. If any of these values are missing the corresponding row is ommited.
+### Example
+This function is used in the following way:
+
+```{R, eval = FALSE}
+readr::read_delim("results.tsv", delim = "\t") %>% eq_clean_data() %>% dplyr::filter(COUNTRY == "MEXICO" & lubridate::year(DATE) >= 2000) %>% 
+dplyr::mutate(popup_text = eq_create_label(.)) %>% eq_map(annot_col = "popup_text")
+
+```

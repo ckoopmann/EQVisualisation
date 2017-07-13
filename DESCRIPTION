@@ -16,3 +16,6 @@ Imports:
     grid,
     ggplot2,
     scales
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
