@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/ckoopmann/EQVisualisation.svg?branch=master)](https://travis-ci.org/ckoopmann/EQVisualisation)
+
+
 # EQVisualisation Package
 This is the *EQVisualisation* package developed as part of the Coursera Course *Mastering Software Development in R Capstone*. The purpose of this package is the visualsation of different aspects of the Earthquake data as provided [here](https://www.ngdc.noaa.gov/nndc/struts/form?t=101650&s=1&d=1) 
 
