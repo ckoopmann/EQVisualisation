@@ -10,4 +10,4 @@ This package implements the following functions:
 3. Create Interactive Map of Earthquakes
 
 ## Documentation
-To find out more about the implementation of these functions and how to access them, read the vignette *EQVisualisation Package Introduction*.
+To find out more about the implementation of these functions and how to access them, read the vignette *EQVisualisation Introduction*.
