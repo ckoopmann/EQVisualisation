@@ -19,6 +19,7 @@ Clean up the Earthquake Dataframe
 This function cleans up the data frame in the sense that it creates a new DATE Column and converting LATITUDE and LONGITUDE columns to numeric
 }
 \examples{
-eq_clean_data(df)
+\dontrun{
+eq_clean_data(df)}
 
 }

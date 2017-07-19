@@ -15,6 +15,7 @@
 #'  \item{"shape"}{ Shape of the points on the timeline}
 #'  \item{"Colour"}{ Colour of the points on the timeline}
 #' }
+#' @param mapping Geometrical mapping to use (see ggplot2)
 #' @param data The data to be displayed in this layer. There are three
 #'    options:
 #'
@@ -28,7 +29,6 @@
 #'    A `function` will be called with a single argument,
 #'    the plot data. The return value must be a `data.frame.`, and
 #'    will be used as the layer data.
-#' @param geom The geometric object to use display the data
 #' @param stat The statistical transformation to use on the data for this
 #'    layer, as a string.
 #' @param position Position adjustment, either as a string, or the result of
@@ -40,12 +40,6 @@
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
 #'   the default plot specification, e.g. [borders()].
-#' @param check.aes,check.param If `TRUE`, the default, will check that
-#'   supplied parameters and aesthetics are understood by the `geom` or
-#'   `stat`. Use `FALSE` to suppress the checks.
-#' @param params Additional parameters to the `geom` and `stat`.
-#' @param subset DEPRECATED. An older way of subsetting the dataset used in a
-#'   layer.
 #' @param na.rm If `FALSE`, the default, missing values are removed with
 #'   a warning. If `TRUE`, missing values are silently removed.
 #' @param ... other arguments passed on to [layer()]. These are
@@ -64,10 +58,12 @@
 #' @importFrom ggplot2 .pt
 #' @importFrom ggplot2 .stroke
 #' @importFrom scales alpha
-#' 
+#'
 #' @export
 #' @examples
-#' ggplot(data = df[COUNTRY %in% c("CHINA","USA") & YEAR >= 2000], aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2)
+#' \dontrun{ggplot(data = df[COUNTRY %in% c("CHINA","USA") & YEAR >= 2000],
+#' aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) +
+#'  geom_timeline(alpha = 0.2)}
 geom_timeline <- function(mapping = NULL, data = NULL,
                           stat = "identity", position = "identity",
                           ...,
@@ -95,7 +91,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
                           shape = 19, colour = "black", size = 5, fill = NA,
                           alpha = 0.2, stroke = 0.5, y = 0.2
                         ),
-                        
+
                         draw_panel = function(data, panel_params, coord, na.rm = FALSE) {
                           coords <- coord$transform(data, panel_params)
                           points = grid::pointsGrob(
@@ -130,6 +126,9 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
 #'  \item{"label"}{Labels to be added to timeline points}
 #'  \item{"magnitude"}{Magnitude variable according to which to determine the top nmax earthquakes}
 #' }
+#' @param mapping Geometrical mapping to use (see ggplot2)
+#' @param parse Wether or not to parse the label text (see ggplot2 geom text)
+#' @param check_overlap Wether or not to check for overlapping label texts (see ggplot2 geom text)
 #' @param nudge_y Amount by which to shift the label on the y axis relative to the point
 #' @param nudge_x Amount by which to shift the label on the x axis relative to the point
 #' @param nmax Number of earthquakes to be labeled. (Will be top earthquakes according to magnitude aesthetic)
@@ -146,7 +145,6 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
 #'    A `function` will be called with a single argument,
 #'    the plot data. The return value must be a `data.frame.`, and
 #'    will be used as the layer data.
-#' @param geom The geometric object to use display the data
 #' @param stat The statistical transformation to use on the data for this
 #'    layer, as a string.
 #' @param position Position adjustment, either as a string, or the result of
@@ -158,12 +156,6 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
 #'   the default plot specification, e.g. [borders()].
-#' @param check.aes,check.param If `TRUE`, the default, will check that
-#'   supplied parameters and aesthetics are understood by the `geom` or
-#'   `stat`. Use `FALSE` to suppress the checks.
-#' @param params Additional parameters to the `geom` and `stat`.
-#' @param subset DEPRECATED. An older way of subsetting the dataset used in a
-#'   layer.
 #' @param na.rm If `FALSE`, the default, missing values are removed with
 #'   a warning. If `TRUE`, missing values are silently removed.
 #' @param ... other arguments passed on to [layer()]. These are
@@ -183,11 +175,14 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
 #' @importFrom ggplot2 .pt
 #' @importFrom ggplot2 position_nudge
 #' @importFrom scales alpha
-#' 
+#'
 #' @export
-#' @examples
-#' ggplot(data = df[COUNTRY %in% c("CHINA","USA") & YEAR >= 2000], aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2) + 
-#'     geom_timeline(alpha = 0.2) + geom_timeline_label(aes(magnitude = INTENSITY, label = LOCATION_NAME), nudge_y = 0.2,)
+#' @examples \dontrun{
+#' ggplot(data = df[COUNTRY %in% c("CHINA","USA") & YEAR >= 2000],
+#'  aes(x = DATE, y = COUNTRY,
+#'  color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2) +
+#'     geom_timeline(alpha = 0.2) + geom_timeline_label(aes(magnitude = INTENSITY,
+#'      label = LOCATION_NAME),nudge_y = 0.2,)}
 geom_timeline_label <- function(mapping = NULL, data = NULL,
                                 stat = "identity", position = "identity",
                                 ...,
@@ -203,7 +198,7 @@ geom_timeline_label <- function(mapping = NULL, data = NULL,
     if (!missing(position)) {
       stop("Specify either `position` or `nudge_x`/`nudge_y`", call. = FALSE)
     }
-    
+
     position <- ggplot2::position_nudge(nudge_x, nudge_y)
   }
   ggplot2::layer(
@@ -225,12 +220,12 @@ geom_timeline_label <- function(mapping = NULL, data = NULL,
 }
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
                              required_aes = c("x", "y", "label","magnitude"),
-                             
+
                              default_aes = ggplot2::aes(
                                fontsize = 2, angle = 45, alpha = NA, family = "",
                                fontface = 1, lineheight = 1.2
                              ),
-                             
+
                              draw_panel = function(data, panel_params, coord, parse = FALSE,
                                                    na.rm = FALSE, check_overlap = FALSE, nmax = 3) {
                                lab <- data$label
@@ -262,8 +257,8 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
                                  grobList = c(grobList, list(new_line))
                                }
                                grid::gTree(children = do.call(gList, grobList))
-                               
+
                              },
-                             
+
                              draw_key = ggplot2::draw_key_text
 )

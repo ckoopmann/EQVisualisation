@@ -16,12 +16,14 @@ Label Character vector in html format
 Create Annotation Column for use in eq_map
 }
 \details{
-This function creates a text annotation column in html 
+This function creates a text annotation column in html
 with the format VariableName: Value for Location, Magnitude and Total Deaths of each earthquake in seperate rows.
 Where the data is missing the corresponding row will be omitted. Can be used for example with the dplyr::mutate function (see examples).
 }
 \examples{
-readr::read_delim("results.tsv", delim = "\\t") \%>\% eq_clean_data() \%>\% dplyr::filter(COUNTRY == "MEXICO" & lubridate::year(DATE) >= 2000) \%>\% 
+\dontrun{
+readr::read_delim("results.tsv", delim = "\\t") \%>\% eq_clean_data() \%>\%
+ dplyr::filter(COUNTRY == "MEXICO" & lubridate::year(DATE) >= 2000) \%>\%
 dplyr::mutate(popup_text = eq_create_label(.)) \%>\% eq_map(annot_col = "popup_text")
-
+}
 }

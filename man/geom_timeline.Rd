@@ -9,6 +9,8 @@ geom_timeline(mapping = NULL, data = NULL, stat = "identity",
   inherit.aes = TRUE)
 }
 \arguments{
+\item{mapping}{Geometrical mapping to use (see ggplot2)}
+
 \item{data}{The data to be displayed in this layer. There are three
    options:
 
@@ -45,17 +47,6 @@ a warning. If `TRUE`, missing values are silently removed.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. [borders()].}
-
-\item{geom}{The geometric object to use display the data}
-
-\item{check.aes, check.param}{If `TRUE`, the default, will check that
-supplied parameters and aesthetics are understood by the `geom` or
-`stat`. Use `FALSE` to suppress the checks.}
-
-\item{params}{Additional parameters to the `geom` and `stat`.}
-
-\item{subset}{DEPRECATED. An older way of subsetting the dataset used in a
-layer.}
 }
 \description{
 Timeline Visualisation of Earthquake data
@@ -77,5 +68,7 @@ The size of the points as well as the colour can be used to visualize additional
 }
 
 \examples{
-ggplot(data = df[COUNTRY \%in\% c("CHINA","USA") & YEAR >= 2000], aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2)
+\dontrun{ggplot(data = df[COUNTRY \%in\% c("CHINA","USA") & YEAR >= 2000],
+aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) +
+ geom_timeline(alpha = 0.2)}
 }

@@ -23,7 +23,8 @@ radius is proportional to the Earthquake magnitude (EQ_PRIMARY). The text suppli
 on a specific Earthquake marker
 }
 \examples{
-readr::read_delim("results.tsv", delim = "\\t") \%>\% eq_clean_data() \%>\% 
+\dontrun{
+readr::read_delim("results.tsv", delim = "\\t") \%>\% eq_clean_data() \%>\%
 dplyr::filter(COUNTRY == "MEXICO" & lubridate::year(DATE) >= 2000) \%>\% eq_map(annot_col = "DATE")
-
+}
 }

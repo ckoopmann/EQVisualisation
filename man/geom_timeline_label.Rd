@@ -10,6 +10,8 @@ geom_timeline_label(mapping = NULL, data = NULL, stat = "identity",
   inherit.aes = TRUE, nmax = 10)
 }
 \arguments{
+\item{mapping}{Geometrical mapping to use (see ggplot2)}
+
 \item{data}{The data to be displayed in this layer. There are three
    options:
 
@@ -35,9 +37,13 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 `color = "red"` or `size = 3`. They may also be parameters
 to the paired geom/stat.}
 
+\item{parse}{Wether or not to parse the label text (see ggplot2 geom text)}
+
 \item{nudge_x}{Amount by which to shift the label on the x axis relative to the point}
 
 \item{nudge_y}{Amount by which to shift the label on the y axis relative to the point}
+
+\item{check_overlap}{Wether or not to check for overlapping label texts (see ggplot2 geom text)}
 
 \item{na.rm}{If `FALSE`, the default, missing values are removed with
 a warning. If `TRUE`, missing values are silently removed.}
@@ -52,17 +58,6 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. [borders()].}
 
 \item{nmax}{Number of earthquakes to be labeled. (Will be top earthquakes according to magnitude aesthetic)}
-
-\item{geom}{The geometric object to use display the data}
-
-\item{check.aes, check.param}{If `TRUE`, the default, will check that
-supplied parameters and aesthetics are understood by the `geom` or
-`stat`. Use `FALSE` to suppress the checks.}
-
-\item{params}{Additional parameters to the `geom` and `stat`.}
-
-\item{subset}{DEPRECATED. An older way of subsetting the dataset used in a
-layer.}
 }
 \description{
 Add Labels to Timeline Visualisation
@@ -82,6 +77,10 @@ The timeline_label geom adds a text variable as lable to the most significant ea
 }
 
 \examples{
-ggplot(data = df[COUNTRY \%in\% c("CHINA","USA") & YEAR >= 2000], aes(x = DATE, y = COUNTRY, color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2) + 
-    geom_timeline(alpha = 0.2) + geom_timeline_label(aes(magnitude = INTENSITY, label = LOCATION_NAME), nudge_y = 0.2,)
+\dontrun{
+ggplot(data = df[COUNTRY \%in\% c("CHINA","USA") & YEAR >= 2000],
+ aes(x = DATE, y = COUNTRY,
+ color = DEATHS, size = EQ_PRIMARY)) + geom_timeline(alpha = 0.2) +
+    geom_timeline(alpha = 0.2) + geom_timeline_label(aes(magnitude = INTENSITY,
+     label = LOCATION_NAME),nudge_y = 0.2,)}
 }

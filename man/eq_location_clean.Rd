@@ -19,6 +19,6 @@ Clean up the Earthquake Location column
 This function removes the country name from the location by splitting the location column at the first colon
 }
 \examples{
-eq_clean_location(df)
+\dontrun{eq_clean_location(df)}
 
 }
